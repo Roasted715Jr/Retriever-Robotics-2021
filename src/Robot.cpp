@@ -1,12 +1,13 @@
-#include "util/Robot.h"
+#include "Robot.h"
+#include "pros/misc.h"
 
 int Robot::selectedAuton = -1;
-lv_obj_t *Robot::autonColor = lv_obj_create(lv_scr_act(), nullptr);
-lv_style_t Robot::styleSelectedAuton = lv_style_t();
 lv_color_t Robot::colorRed = LV_COLOR_MAKE(255, 0, 0);
 lv_color_t Robot::colorBlue = LV_COLOR_MAKE(0, 0, 255);
+lv_obj_t *Robot::autonColor = lv_obj_create(lv_scr_act(), nullptr);
+lv_style_t Robot::styleSelectedAuton = lv_style_t();
 
-Robot::Robot(): leftWheels(MotorGroup()), rightWheels(MotorGroup()) {}
+Robot::Robot(): leftWheels(MotorGroup()), rightWheels(MotorGroup()), master(pros::E_CONTROLLER_MASTER) {}
 
 void Robot::printAutons() {
 	lv_obj_t *btnBlue = createBtn(lv_scr_act(), 0, 0, 100, 35, BLUE, "Blue Auton");

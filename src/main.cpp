@@ -1,4 +1,5 @@
 #include "main.h"
+#include "pros/misc.h"
 
 //Change this when you are uploading to a different robot
 #define BIG_BOT
@@ -73,16 +74,5 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-
 	robot.runOpControl();
-
-	while (true) {
-		int pwr = master.get_analog(ANALOG_LEFT_Y);
-		int turn = master.get_analog(ANALOG_RIGHT_X);
-
-		robot.setArcadePowers(pwr, turn);
-
-		pros::delay(20);
-	}
 }
