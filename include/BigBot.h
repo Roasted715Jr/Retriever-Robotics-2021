@@ -2,6 +2,8 @@
 #define BIG_BOT_H
 
 #include "Robot.h"
+#include "pros/adi.hpp"
+#include "pros/misc.h"
 
 //This class holds methods and properties unique to the big bot
 class BigBot: public Robot {
@@ -13,6 +15,7 @@ class BigBot: public Robot {
 		void runOpControl();
 
 	private:
+		pros::ADIDigitalOut pneuNormallyOpen, pneuNormallyClosed;
 };
 
 #endif
