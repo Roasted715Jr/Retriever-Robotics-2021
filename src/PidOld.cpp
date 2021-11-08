@@ -68,72 +68,72 @@ void Pid::setMaxOut(double maxOut_){
 double Pid::update(double input){
 	double derivative;
 	if(enabled){
-	// todo timelast initiliaze on first run
-	// Dt = vex::timer::system()-timeLast;
-	Dt = time(&timer)-timeLast;
-	// timeLast = vex::timer::system();
-	timeLast = time(&timer);
+		// todo timelast initiliaze on first run
+		// Dt = vex::timer::system()-timeLast;
+		Dt = time(&timer) - timeLast;
+		// timeLast = vex::timer::system();
+		timeLast = time(&timer);
 
-	// P
-	error = setpoint - input;
-	double P = error * Kp;
+		// P
+		error = setpoint - input;
+		double P = error * Kp;
 
-	// I
-	// integral active zone. 0 means no limit
-	if(IactiveZone == 0 || fabs(P) < IactiveZone){
-		integrating = true;
-		integrator += error*Dt*Ki;
-	}
-	else{
-		integrating = false;
-		// integrator = 0;
-	}
-
-
-	// limit integral
-	// 0 means no limit set
-	if(iLimit == 0) {}
-	else if(integrator > iLimit)
-		{ integrator = iLimit; }
-	else if(integrator < -iLimit)
-		{ integrator = -iLimit; }
-
-
-	if(clearDerivative){
-		derivative = 0;
-		clearDerivative = false;
-	}
-	else{
-		derivative = ((inputLast-input)/Dt)*Kd;
-	}
-
-	output = (P + integrator + derivative);
-
-	// limit output
-	// no limit if equal 0
-	if(maxOut == 0){}
-	else if(output > maxOut)
-		{output = maxOut;}
-	else if (output < -maxOut)
-		{output = -maxOut;}
-
-		// DEBUGGING
-		// #ifdef DEBUG
-		if(debugEnabled){
-		std::cout << name << ": "
-		<< "E: " << std::setw(7) << error
-		<< "  input: " << std::setw(7) << input
-		<< "  P: " << std::setw(7) << P
-		<< "  I: " << std::setw(7) << integrator
-		<< "  D: " << std::setw(7) << derivative
-		<< "  Dt: " << std::setw(7) << Dt
-		<< "  output: " << std::setw(7) << output
-		<< std::endl;
+		// I
+		// integral active zone. 0 means no limit
+		if(IactiveZone == 0 || fabs(P) < IactiveZone){
+			integrating = true;
+			integrator += error*Dt*Ki;
 		}
-		// #endif
+		else{
+			integrating = false;
+			// integrator = 0;
+		}
 
-	inputLast = input;
-	outputLast = output;
+
+		// limit integral
+		// 0 means no limit set
+		if(iLimit == 0) {}
+		else if(integrator > iLimit)
+			{ integrator = iLimit; }
+		else if(integrator < -iLimit)
+			{ integrator = -iLimit; }
+
+
+		if(clearDerivative){
+			derivative = 0;
+			clearDerivative = false;
+		}
+		else{
+			derivative = ((inputLast-input)/Dt)*Kd;
+		}
+
+		output = (P + integrator + derivative);
+
+		// limit output
+		// no limit if equal 0
+		if(maxOut == 0){}
+		else if(output > maxOut)
+			{output = maxOut;}
+		else if (output < -maxOut)
+			{output = -maxOut;}
+
+			// DEBUGGING
+			// #ifdef DEBUG
+			if(debugEnabled){
+			std::cout << name << ": "
+			<< "E: " << std::setw(7) << error
+			<< "  input: " << std::setw(7) << input
+			<< "  P: " << std::setw(7) << P
+			<< "  I: " << std::setw(7) << integrator
+			<< "  D: " << std::setw(7) << derivative
+			<< "  Dt: " << std::setw(7) << Dt
+			<< "  output: " << std::setw(7) << output
+			<< std::endl;
+			}
+			// #endif
+
+		inputLast = input;
+		outputLast = output;
 	}
 	else{
 	// timeLast = vex::timer::system();

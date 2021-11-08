@@ -1,9 +1,9 @@
 #include "main.h"
-#include "pros/misc.h"
+// #include "pros/misc.h"
 
 //Change this when you are uploading to a different robot
-#define BIG_BOT
-// #define SMALL_BOT
+// #define BIG_BOT
+#define SMALL_BOT
 
 #ifdef BIG_BOT
 #include "BigBot.h"
@@ -58,6 +58,7 @@ void competition_initialize() {
  */
 void autonomous() {
 	//Whatever is in here will be ran for auton and skills
+	robot.startMatchAuton();
 }
 
 /**
@@ -74,5 +75,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	robot.runOpControl();
+	// autonomous();
+
+	// robot.runOpControl();
 }

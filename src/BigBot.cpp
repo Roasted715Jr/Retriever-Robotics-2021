@@ -1,17 +1,5 @@
 #include "BigBot.h"
-#include "pros/adi.hpp"
-
-#define R1_DRIVE_PORT 1
-#define R2_DRIVE_PORT 2
-#define R3_DRIVE_PORT 3
-#define R4_DRIVE_PORT 4
-#define L1_DRIVE_PORT 5
-#define L2_DRIVE_PORT 6
-#define L3_DRIVE_PORT 7
-#define L4_DRIVE_PORT 8
-
-#define PNEUMATIC_NO_PORT 'A'
-#define PNEUMATIC_NC_PORT 'B'
+#include "pros/misc.h"
 
 BigBot::BigBot(): pneuNormallyOpen(pros::ADIDigitalOut(PNEUMATIC_NO_PORT)), pneuNormallyClosed(pros::ADIDigitalOut(PNEUMATIC_NC_PORT)) {
 	rightWheels.addMotor(pros::Motor(R1_DRIVE_PORT));
@@ -27,15 +15,17 @@ BigBot::BigBot(): pneuNormallyOpen(pros::ADIDigitalOut(PNEUMATIC_NO_PORT)), pneu
 }
 
 void BigBot::startMatchAuton() {
-	setArcadePowers(127, 0);
-	pros::delay(5000);
+	// setArcadePowers(127, 0);
+	// pros::delay(5000);
 
-	setArcadePowers(0, 0);
-	pros::delay(500);
+	// setArcadePowers(0, 0);
+	// pros::delay(500);
 
-	setArcadePowers(-127, 0);
-	pros::delay(5000);
-	setArcadePowers(0, 0);
+	// setArcadePowers(-127, 0);
+	// pros::delay(5000);
+	// setArcadePowers(0, 0);
+
+	driveToPos(720, 0.07, 0.00003, 0.3);
 }
 
 void BigBot::startSkillsAuton() {
@@ -43,6 +33,8 @@ void BigBot::startSkillsAuton() {
 }
 
 void BigBot::runOpControl() {
+	std::cout << "Small bot opcontrol" << std::endl;
+	
 	bool pneumaticState = true;
 
 	// addText("Hello there loser");
@@ -66,6 +58,6 @@ void BigBot::runOpControl() {
 }
 
 void BigBot::setArcadePowers(int pwr, int turn) {
-	leftWheels = (pwr + turn) / 2;
-	rightWheels = (pwr + turn) / 2;
+	leftWheels = (pwr + turn) * 3 / 4;
+	rightWheels = (pwr - turn) * 3 / 4;
 }
