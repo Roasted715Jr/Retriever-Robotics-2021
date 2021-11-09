@@ -77,5 +77,5 @@ void autonomous() {
 void opcontrol() {
 	// autonomous();
 
-	// robot.runOpControl();
+	robot.runOpControl();
 }

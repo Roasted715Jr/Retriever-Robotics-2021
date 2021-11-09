@@ -1,4 +1,5 @@
 #include "Robot.h"
+#include "pros/motors.h"
 
 int Robot::selectedAuton = -1;
 lv_color_t Robot::colorRed = LV_COLOR_MAKE(255, 0, 0);
@@ -9,6 +10,16 @@ lv_style_t Robot::styleSelectedAuton = lv_style_t();
 Robot::Robot(): master(pros::Controller(pros::E_CONTROLLER_MASTER)) {
 	leftWheels = MotorGroup();
 	rightWheels = MotorGroup();
+}
+
+void Robot::initDriveMotors() {
+	//Set the encoder units
+	leftWheels.setEncoderUnits(pros::E_MOTOR_ENCODER_DEGREES);
+	rightWheels.setEncoderUnits(pros::E_MOTOR_ENCODER_DEGREES);
+
+	//Set the motor positions to 0
+	leftWheels.setZeroPos();
+	rightWheels.setZeroPos();	
 }
 
 void Robot::printAutons() {
@@ -27,42 +38,33 @@ void Robot::printAutons() {
 }
 
 void Robot::driveToPos(double target, double p, double i, double d) {
-	//Pass the wheel position to the PID
-	//PID gives an output for the speed
-
-	//Need to figure out how to get both running at the same time
-	// leftWheels.driveToPos(target);
-	// rightWheels.driveToPos(target);
-
-	// motors[0].set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
-	// motors[0].set_zero_position(motors[0].get_position());
+	//Set the motor positions to 0
 	leftWheels.setZeroPos();
 	rightWheels.setZeroPos();
-	// pid.changeConstants(0.05, 0.0015, 0.17);
+	
+	//Set the constants for the PID
 	leftWheels.pid.changeConstants(p, i, d);
 	rightWheels.pid.changeConstants(p, i, d);
-	// pid.setMaxOut(127); //Use this to change the motor speeds
+	
+	//Set the targets
 	leftWheels.pid.setTarget(target);
 	rightWheels.pid.setTarget(target);
-	// std::cout << "Target: " << pid.getTarget() << std::endl;
-	// std::cout << "Current pos: " << motors[0].get_position() << std::endl;
+
+	//Enable the PIDS
 	leftWheels.pid.setEnabled(true);
 	rightWheels.pid.setEnabled(true);
 
 	/*****Check to see if the encoders for the drives change by the same amount*****/
-	// while (!motors[0].get_zero_position_flag()) {
 	while (leftWheels.getPos() != target && rightWheels.getPos() != target) {
-		// std::cout << "In loop" << std::endl;
-		// std::cout << pid.update(motors.at(0).get_position()) << std::endl;
 		leftWheels.setPower(leftWheels.pid.update(leftWheels.getPos()));
 		rightWheels.setPower(rightWheels.pid.update(rightWheels.getPos()));
 		pros::delay(20);
 	}
 
+	//Stop the motors and disable the PIDs
 	leftWheels.pid.setEnabled(false);
 	rightWheels.pid.setEnabled(false);
 	setArcadePowers(0, 0);
-	// std::cout << "End point: " << motors[0].get_position() << std::endl;
 }
 
 void Robot::addText(std::string txt) {

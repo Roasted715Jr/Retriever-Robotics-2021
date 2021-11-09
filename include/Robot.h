@@ -16,6 +16,7 @@ class Robot {
 		virtual void setArcadePowers(int pwr, int turn) = 0;
 		virtual void runOpControl() = 0;
 		void printAutons();
+		void initDriveMotors();
 
 		void driveToPos(double target, double p, double i, double d);
 

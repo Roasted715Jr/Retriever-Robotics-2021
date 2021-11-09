@@ -9,6 +9,8 @@
 #define L1_DRIVE_PORT 4
 #define L2_DRIVE_PORT 5
 #define L3_DRIVE_PORT 6
+#define RIGHT_LIFT_PORT 7
+#define LEFT_LIFT_PORT 8
 
 //This class holds methods and properties unique to the big bot
 class SmallBot: public Robot {
@@ -20,6 +22,7 @@ class SmallBot: public Robot {
 		void runOpControl();
 
 	private:
+		MotorGroup liftMotors;
 };
 
 #endif

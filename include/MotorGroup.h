@@ -2,6 +2,7 @@
 #define MOTOR_GROUP_H
 
 #include "PID.h"
+#include "pros/motors.h"
 #include "pros/motors.hpp"
 #include "pros/apix.h"
 #include <vector>
@@ -18,6 +19,8 @@ class MotorGroup {
 		void driveToPos(double target);
 		double getPos();
 		void setZeroPos();
+		void setGearbox(pros::motor_gearset_e_t gearset);
+		void setEncoderUnits(pros::motor_encoder_units_e_t units);
 
 		PID pid;
 	private:
