@@ -11,7 +11,7 @@ class MotorGroup {
 	public:
 		MotorGroup();
 		MotorGroup(int p, int i, int d);
-		void addMotor(pros::Motor motor);		
+		void addMotor(pros::Motor motor);
 		void setPower(int pwr);
 		void operator=(int voltage);
 		void setDir(bool reverse);
@@ -21,6 +21,7 @@ class MotorGroup {
 		void setZeroPos();
 		void setGearbox(pros::motor_gearset_e_t gearset);
 		void setEncoderUnits(pros::motor_encoder_units_e_t units);
+		double getVel();
 
 		PID pid;
 	private:

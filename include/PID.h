@@ -39,7 +39,8 @@ class PID {
         uint64_t timeLast = 0;
         // std::chrono::milliseconds timeLast;
         double outputLast = 0;
-        uint64_t dT = 0;
+        // uint64_t dT = 0;
+        clock_t dT = 0;
         // std::chrono::milliseconds dT;
 
         bool enabled;
@@ -47,7 +48,8 @@ class PID {
         std::string name;
         bool clearDerivative = true;
         // time_t timer;
-        uint64_t time;
+        // uint64_t time;
+        clock_t time;
         // std::chrono::milliseconds time;
 };
 

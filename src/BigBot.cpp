@@ -1,24 +1,20 @@
 #include "BigBot.h"
-#include "pros/misc.h"
-#include "pros/motors.h"
 
-BigBot::BigBot(): pneuNormallyOpen(pros::ADIDigitalOut(PNEUMATIC_NO_PORT)), pneuNormallyClosed(pros::ADIDigitalOut(PNEUMATIC_NC_PORT)) {
+BigBot::BigBot(): wheelCircumference(WHEEL_DIAMETER * M_PI), pneuNormallyOpen(pros::ADIDigitalOut(PNEUMATIC_NO_PORT)), pneuNormallyClosed(pros::ADIDigitalOut(PNEUMATIC_NC_PORT)) {
 	rightWheels.addMotor(pros::Motor(R1_DRIVE_PORT));
 	rightWheels.addMotor(pros::Motor(R2_DRIVE_PORT));
 	rightWheels.addMotor(pros::Motor(R3_DRIVE_PORT, true));
 	rightWheels.addMotor(pros::Motor(R4_DRIVE_PORT));
+	rightWheels.addMotor(pros::Motor(R5_DRIVE_PORT, true));
 	rightWheels.reverseDirs();
 
 	leftWheels.addMotor(pros::Motor(L1_DRIVE_PORT));
-	leftWheels.addMotor(pros::Motor(L2_DRIVE_PORT, true));
-	leftWheels.addMotor(pros::Motor(L3_DRIVE_PORT));
+	leftWheels.addMotor(pros::Motor(L2_DRIVE_PORT));
+	leftWheels.addMotor(pros::Motor(L3_DRIVE_PORT, true));
 	leftWheels.addMotor(pros::Motor(L4_DRIVE_PORT));
+	leftWheels.addMotor(pros::Motor(L5_DRIVE_PORT, true));
 
-	initDriveMotors();
-	
-	//Set the gearboxes
-	leftWheels.setGearbox(pros::E_MOTOR_GEARSET_06);
-	rightWheels.setGearbox(pros::E_MOTOR_GEARSET_06);
+	initDriveMotors(pros::E_MOTOR_GEARSET_06);
 }
 
 void BigBot::startMatchAuton() {
@@ -40,7 +36,7 @@ void BigBot::startSkillsAuton() {
 }
 
 void BigBot::runOpControl() {
-	std::cout << "Small bot opcontrol" << std::endl;
+	std::cout << "Big bot opcontrol" << std::endl;
 	
 	bool pneumaticState = true;
 
@@ -62,9 +58,4 @@ void BigBot::runOpControl() {
 
 		pros::delay(20);
 	}
-}
-
-void BigBot::setArcadePowers(int pwr, int turn) {
-	leftWheels = (pwr + turn) * 3 / 4;
-	rightWheels = (pwr - turn) * 3 / 4;
 }

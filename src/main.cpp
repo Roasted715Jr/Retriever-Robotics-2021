@@ -2,8 +2,11 @@
 // #include "pros/misc.h"
 
 //Change this when you are uploading to a different robot
-// #define BIG_BOT
-#define SMALL_BOT
+#define BIG_BOT
+// #define SMALL_BOT
+
+//This is so Odom can tell what robot we're using
+// #include "Odom.h"
 
 #ifdef BIG_BOT
 #include "BigBot.h"
@@ -22,7 +25,7 @@ SmallBot robot;
  */
 void initialize() {
 	//We'll eventually move this down to competition_initialize()
-	robot.printAutons();
+	// robot.printAutons();
 }
 
 /**

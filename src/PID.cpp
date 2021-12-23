@@ -12,8 +12,10 @@ PID::PID(double p, double i, double d, double maxOut, std::string name) {
 	integrating = true;
 	enabled = false;
 	
-	time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	timeLast = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	// time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	time = clock();
+	// timeLast = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	timeLast = clock();
 }
 
 void PID::setTarget(double target) {

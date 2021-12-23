@@ -1,8 +1,8 @@
 #include "SmallBot.h"
-#include "pros/misc.h"
+#include "pros/adi.hpp"
 #include "pros/motors.h"
 
-SmallBot::SmallBot() {
+SmallBot::SmallBot(): wheelCircumference(WHEEL_DIAMETER * M_PI) {
 	rightWheels.addMotor(pros::Motor(R1_DRIVE_PORT));
 	rightWheels.addMotor(pros::Motor(R2_DRIVE_PORT, true));
 	rightWheels.addMotor(pros::Motor(R3_DRIVE_PORT));
@@ -15,11 +15,7 @@ SmallBot::SmallBot() {
 	liftMotors.addMotor(pros::Motor(RIGHT_LIFT_PORT, true));
 	liftMotors.addMotor(pros::Motor(LEFT_LIFT_PORT));
 
-	initDriveMotors();
-
-	//Set the gearboxes
-	leftWheels.setGearbox(pros::E_MOTOR_GEARSET_18);
-	rightWheels.setGearbox(pros::E_MOTOR_GEARSET_18);
+	initDriveMotors(pros::E_MOTOR_GEARSET_18);
 	liftMotors.setGearbox(pros::E_MOTOR_GEARSET_36);
 }
 
@@ -34,7 +30,14 @@ void SmallBot::startSkillsAuton() {
 void SmallBot::runOpControl() {
 	std::cout << "Small bot opcontrol" << std::endl;
 
+	// pros::ADIGyro gyro(GYRO_PORT);
+	//Call in initialize
+	gyroL.reset();
+
 	while (true) {
+		//Value is a tenth of a degree
+		std::cout << gyroL.get_value() << std::endl;
+
 		int pwr = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 		int turn = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
@@ -49,9 +52,4 @@ void SmallBot::runOpControl() {
 
 		pros::delay(20);
 	}
-}
-
-void SmallBot::setArcadePowers(int pwr, int turn) {
-	leftWheels = (pwr + turn) * 3 / 4;
-	rightWheels = (pwr - turn) * 3 / 4;
 }

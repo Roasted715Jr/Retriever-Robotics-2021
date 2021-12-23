@@ -64,11 +64,11 @@ void MotorGroup::reverseDirs() {
 }
 
 double MotorGroup::getPos() {
-	return motors[1].get_position();
+	return motors[0].get_position();
 }
 
 void MotorGroup::setZeroPos() {
-	motors[1].set_zero_position(motors[1].get_position());
+	motors[0].set_zero_position(motors[1].get_position());
 }
 
 void MotorGroup::setGearbox(pros::motor_gearset_e_t gearset) {
@@ -79,4 +79,8 @@ void MotorGroup::setGearbox(pros::motor_gearset_e_t gearset) {
 void MotorGroup::setEncoderUnits(pros::motor_encoder_units_e_t units) {
 	for (std::vector<pros::Motor>::iterator it = motors.begin(); it != motors.end(); it++)
 		it->set_encoder_units(units);
+}
+
+double MotorGroup::getVel() {
+	return motors[0].get_actual_velocity();
 }

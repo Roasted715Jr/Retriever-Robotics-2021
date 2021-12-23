@@ -12,17 +12,19 @@
 #define RIGHT_LIFT_PORT 7
 #define LEFT_LIFT_PORT 8
 
+#define WHEEL_DIAMETER 1
+
 //This class holds methods and properties unique to the big bot
 class SmallBot: public Robot {
 	public:
 		SmallBot();
-		void setArcadePowers(int pwr, int turn);
 		void startMatchAuton();
 		void startSkillsAuton();
 		void runOpControl();
 
 	private:
 		MotorGroup liftMotors;
+		const double wheelCircumference;
 };
 
 #endif

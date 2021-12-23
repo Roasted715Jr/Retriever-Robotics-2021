@@ -1,5 +1,5 @@
 #include "Robot.h"
-#include "pros/motors.h"
+#include "Odom.h"
 
 int Robot::selectedAuton = -1;
 lv_color_t Robot::colorRed = LV_COLOR_MAKE(255, 0, 0);
@@ -7,19 +7,32 @@ lv_color_t Robot::colorBlue = LV_COLOR_MAKE(0, 0, 255);
 lv_obj_t *Robot::autonColor = lv_obj_create(lv_scr_act(), nullptr);
 lv_style_t Robot::styleSelectedAuton = lv_style_t();
 
-Robot::Robot(): master(pros::Controller(pros::E_CONTROLLER_MASTER)) {
+Robot::Robot(): gyroL(GYRO_L_PORT), gyroR(GYRO_R_PORT), wheelCircumference(0), master(pros::Controller(pros::E_CONTROLLER_MASTER)) {
 	leftWheels = MotorGroup();
 	rightWheels = MotorGroup();
+
+	//This is just so we don't have to play around with dynamic memory
+	static Odom odom(*this);
+	this->odom = &odom;
 }
 
-void Robot::initDriveMotors() {
+void Robot::setArcadePowers(int pwr, int turn) {
+	leftWheels = (pwr + turn) * 3 / 4;
+	rightWheels = (pwr - turn) * 3 / 4;
+}
+
+void Robot::initDriveMotors(pros::motor_gearset_e_t gearset) {
 	//Set the encoder units
 	leftWheels.setEncoderUnits(pros::E_MOTOR_ENCODER_DEGREES);
 	rightWheels.setEncoderUnits(pros::E_MOTOR_ENCODER_DEGREES);
 
 	//Set the motor positions to 0
 	leftWheels.setZeroPos();
-	rightWheels.setZeroPos();	
+	rightWheels.setZeroPos();
+	
+	//Set the gearboxes
+	leftWheels.setGearbox(gearset);
+	rightWheels.setGearbox(gearset);
 }
 
 void Robot::printAutons() {
