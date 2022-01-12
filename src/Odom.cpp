@@ -1,7 +1,7 @@
 // Odometry class
 #include "Odom.h"
 
-Odom::Odom(Robot& robot): robot(robot) {
+Odom::Odom(Robot& robot): robot(robot), currentState(robot.robotState) {
 	currentState.reset();
 	currentState.theta = 90.0;
 	gyro_last = 90;
@@ -58,18 +58,19 @@ void Odom::updateCurrentState(){
 	double gyro_val2 = robot.gyroR.get_value() * 10 + 90;
 	
 	double gyro_val = (gyro_val1 + gyro_val2) / 2;
-	double dTheta = gyro_val - gyro_last;
+	// double dTheta = gyro_val - gyro_last;
+	Angle dTheta = gyro_val - gyro_last;
 	gyro_last = gyro_val;
 	
 	// account for the ungodly amounts of drift present in a vex gyro
 	// dTheta += gyro_calibrameter/10 * Dt;
 
-	if(dTheta > 180.0){
-		dTheta -= 360.0;
-	}
-	else if(dTheta < -180.0){
-		dTheta += 360.0;
-	}
+	// if(dTheta > 180.0){
+	// 	dTheta -= 360.0;
+	// }
+	// else if(dTheta < -180.0){
+	// 	dTheta += 360.0;
+	// }
 	//* update current theta with dtheta
 	currentState.theta += dTheta;
 
@@ -80,7 +81,7 @@ void Odom::updateCurrentState(){
 	double delta_lEnc = lEncoder - oldLEncoder;
 	double delta_rEnc = rEncoder - oldREncoder;
 	// rotateAxes(newX, newY, delta_rEnc, delta_lEnc, (-currentState.theta + 90 - 45)*DEGREES_TO_RADIANS);
-	rotateAxes(newX, newY, delta_rEnc, delta_lEnc, (-currentState.theta + 90 - 45) / DEGREES_PER_RADIAN);
+	rotateAxes(newX, newY, delta_rEnc, delta_lEnc, (-currentState.theta + (double) 45) / DEGREES_PER_RADIAN);
 	// currentState.x += newX * DWHEEL_CIRCUM;
 	currentState.x += newX * 1;
 	// currentState.y += newY * DWHEEL_CIRCUM;
