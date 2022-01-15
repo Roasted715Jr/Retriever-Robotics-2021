@@ -81,6 +81,11 @@ void MotorGroup::setEncoderUnits(pros::motor_encoder_units_e_t units) {
 		it->set_encoder_units(units);
 }
 
+void MotorGroup::setBrakeMode(pros::motor_brake_mode_e_t mode) {
+	for (std::vector<pros::Motor>::iterator it = motors.begin(); it != motors.end(); it++)
+		it->set_brake_mode(mode);
+}
+
 double MotorGroup::getVel() {
 	return motors[0].get_actual_velocity();
 }
